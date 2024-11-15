@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Mesa</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .edit-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 1em;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 1em 0 0.5em;
+            font-size: 16px;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="checkbox"] {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.5em;
+        }
+        button {
+            padding: 0.8em 1.5em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 1em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <h2>Editar Mesa</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Número de Mesa:</label>
+            <input type="text" name="numero" value="{{ mesa.numero }}" required>
+            
+            <label>Disponible:</label>
+            <input type="checkbox" name="disponible" {% if mesa.disponible %}checked{% endif %}>
+            
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+</body>
+</html>

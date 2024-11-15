@@ -1,0 +1,335 @@
+/* Reset global de márgenes y paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Asegura que el padding y margin no afecten el tamaño total de los elementos */
+}
+
+/* Estilos Generales */
+body {
+    font-family: 'Open Sans', Arial, sans-serif; /* Fuente ligera y profesional */
+    background-color: #f4f7fa; /* Un gris muy claro para un fondo limpio y moderno */
+    color: #333; /* Gris oscuro para el texto, fácil de leer */
+    line-height: 1.6;
+}
+
+/* Estilos del Encabezado */
+header {
+    background-color: #2d3748; /* Azul oscuro con tonos metálicos */
+    color: #fff;
+    padding: 25px 50px; /* Espaciado más equilibrado */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil pero moderna */
+    border-bottom: 3px solid #4a5568; /* Línea inferior con un gris metálico más suave */
+}
+
+header h1 {
+    font-family: 'Montserrat', sans-serif; /* Fuente fuerte para el título */
+    font-size: 2.4em; /* Aumento de tamaño para mayor visibilidad */
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #f1f1f1; /* Blanco suave para el título */
+    text-transform: uppercase;
+}
+
+.header-options {
+    display: flex;
+    gap: 30px; /* Espaciado ajustado */
+}
+
+.header-options a {
+    color: #edf2f7; /* Color gris claro */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.header-options a:hover {
+    color: #38b2ac; /* Verde menta al pasar el ratón */
+    transform: translateY(-5px); /* Desplazamiento más sutil */
+}
+
+/* Estilos para Categorías */
+.categories {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.category-button {
+    background-color: #4a90e2; /* Azul vibrante */
+    color: white;
+    border: none;
+    padding: 18px 30px;
+    margin: 0 15px;
+    cursor: pointer;
+    border-radius: 50px; /* Bordes totalmente redondeados */
+    font-size: 1.2em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.category-button:hover {
+    background-color: #6baed6; /* Azul más claro al hacer hover */
+    transform: translateY(-4px);
+}
+
+.category-button.active {
+    background-color: #48bb78; /* Verde suave cuando está activo */
+}
+
+/* Estilos del Menú */
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.menu-item {
+    background-color: #fff;
+    border: 1px solid #e2e8f0; /* Gris claro para bordes */
+    padding: 24px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 280px;
+    font-weight: 600;
+    color: #333;
+}
+
+.menu-item:hover {
+    transform: translateY(-6px); /* Sutil desplazamiento hacia arriba */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+.menu-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px; /* Bordes redondeados */
+    transition: transform 0.3s ease;
+}
+
+.menu-item img:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+}
+
+/* Estilos de la Comanda */
+.order {
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 35px;
+    border-radius: 15px;
+    margin-top: 35px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    font-size: 1.1em;
+}
+
+.order-summary,
+.order-actions {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.order-items {
+    margin: 25px 0;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+}
+
+.delete {
+    background: none;
+    border: none;
+    color: #e53e3e; 
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.delete:hover {
+    color: #c53030; 
+}
+
+
+.total {
+    font-weight: 700;
+    font-size: 1.5em;
+    color: #2d3748; 
+    margin-top: 25px;
+}
+
+
+.recent-order {
+    margin-top: 35px;
+}
+
+.recent-order-details {
+    padding: 25px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.out-of-stock {
+    color: #e53e3e; 
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .header-options {
+        gap: 20px;
+    }
+
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .menu-item {
+        width: 85%; 
+    }
+
+    .category-button {
+        padding: 14px 22px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .order {
+        padding: 20px;
+    }
+}
+
+.button {
+    background-color: #38b2ac; 
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-weight: 700;
+    border-radius: 50px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    display: inline-block;
+    width: 100%; 
+}
+
+
+.button:hover {
+    background-color: #2c7a7b; 
+    transform: translateY(-4px); 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+button.pay {
+    background-color: #38b2ac; 
+    color: white;
+    box-shadow: 0 4px 12px rgba(56, 178, 172, 0.3); 
+}
+
+button.pay:hover {
+    background-color: #2c7a7b; 
+    transform: translateY(-4px); 
+    box-shadow: 0 6px 20px rgba(56, 178, 172, 0.4); 
+}
+
+button.pay:active {
+    background-color: #247a6b; 
+    box-shadow: none; 
+}
+
+
+button.back {
+    background-color: #e53e3e; 
+    color: white;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3); 
+}
+
+button.back:hover {
+    background-color: #c53030; 
+    transform: translateY(-4px); 
+    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.4); 
+}
+
+button.back:active {
+    background-color: #9b2c2c; 
+    box-shadow: none; 
+}
+
+
+button.agregar {
+    background-color: #4a90e2; 
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3); 
+}
+
+button.agregar:hover {
+    background-color: #357abd; 
+    transform: translateY(-4px); 
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4); 
+}
+
+button.agregar:active {
+    background-color: #2a6385; 
+    box-shadow: none; 
+}
+
+
+button:disabled {
+    background-color: #e2e8f0; 
+    color: #bbb; 
+    cursor: not-allowed; 
+    box-shadow: none; 
+}
+
+
+.button {
+    background-color: #38b2ac; 
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-weight: 700;
+    border-radius: 50px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    display: inline-block;
+    width: 100%; 
+}
+
+
+.button:hover {
+    background-color: #2c7a7b; 
+    transform: translateY(-4px); 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
+}

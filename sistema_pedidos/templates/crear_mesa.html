@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Mesa</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .create-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 1em;
+            color: #ff007f;
+        }
+        .messages {
+            margin-bottom: 1em;
+        }
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        label {
+            display: block;
+            margin: 1em 0 0.5em;
+            font-size: 16px;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 1em;
+        }
+        .btn {
+            padding: 0.8em 1.5em;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-create {
+            background-color: #ff007f;
+        }
+        .btn-create:hover {
+            background-color: #cc0066;
+        }
+        .btn-back {
+            background-color: #ff007f;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-back:hover {
+            background-color: #cc0066;
+        }
+    </style>
+</head>
+<body>
+    <div class="create-container">
+        <h2>Crear Mesa</h2>
+
+        <!-- Mensajes -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <label>Número de Mesa:</label>
+            <input type="text" name="numero" required>
+            <div class="button-container">
+                <button type="submit" class="btn btn-create">Crear Mesa</button>
+                <a href="{% url 'admin_home' %}" class="btn btn-back">Volver Atrás</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

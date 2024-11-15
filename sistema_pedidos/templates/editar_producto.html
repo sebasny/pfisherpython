@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 90%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .current-image {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .current-image img {
+            width: 150px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Editar Producto</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Nombre:</label>
+            <input type="text" name="nombre" value="{{ producto.nombre }}" required>
+
+            <label>Descripción:</label>
+            <textarea name="descripcion">{{ producto.descripcion }}</textarea>
+
+            <label>Precio:</label>
+            <input type="number" name="precio" step="0.01" value="{{ producto.precio }}" required>
+
+            <label>Categoría:</label>
+            <select name="categoria">
+                <option value="bebidas" {% if producto.categoria == "bebidas" %}selected{% endif %}>Bebidas</option>
+                <option value="postres" {% if producto.categoria == "postres" %}selected{% endif %}>Postres</option>
+                <option value="platos" {% if producto.categoria == "platos" %}selected{% endif %}>Platos</option>
+            </select>
+
+            <label>Stock:</label>
+            <input type="number" name="stock" value="{{ producto.stock }}" required>
+
+            <div class="current-image">
+                <label>Imagen Actual:</label><br>
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="Imagen del Producto" width="150"><br>
+                {% else %}
+                    <p>No hay imagen disponible</p>
+                {% endif %}
+            </div>
+
+            <label>Actualizar Imagen:</label>
+            <input type="file" name="imagen"><br>
+
+            <button type="submit" class="btn">Guardar Cambios</button>
+        </form>
+    </div>
+</body>
+</html>

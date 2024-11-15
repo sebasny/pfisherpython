@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #ff007f;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, textarea, select, button,.btn-back {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .button-container, .btn-back {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn, .btn-back {
+            width: 48%;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-save,.btn-back {
+            background-color: #ff007f;
+        }
+
+        .btn-save:hover {
+            background-color: #cc0066;
+        }
+
+        .btn-back {
+            background-color: #ff007f;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-back:hover {
+            background-color: #cc0066;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Crear Producto</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Nombre:</label>
+            <input type="text" name="nombre" required>
+
+            <label>Descripción:</label>
+            <textarea name="descripcion"></textarea>
+
+            <label>Precio:</label>
+            <input type="number" name="precio" step="0.01" required>
+
+            <label>Categoría:</label>
+            <select name="categoria">
+                <option value="bebidas">Bebidas</option>
+                <option value="postres">Postres</option>
+                <option value="platos">Platos</option>
+            </select>
+
+            <label>Stock:</label>
+            <input type="number" name="stock" required>
+
+            <label>Imagen:</label>
+            <input type="file" name="imagen">
+
+            <div class="button-container">
+                <button type="submit" class="btn btn-save">Guardar Producto</button>
+                <a href="javascript:history.back()" class="btn btn-back">Volver Atrás</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
