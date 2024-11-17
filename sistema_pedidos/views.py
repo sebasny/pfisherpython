@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
@@ -7,20 +8,22 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
-
-def admin_home(request):
-    """Vista principal del administrador."""
-    return render(request, 'admin_home.html')
-
-
-def index(request):
-    """Vista principal donde las mesas pueden ver el menú."""
-    if not request.user.is_authenticated or not hasattr(request.user, 'mesa'):
-        return redirect('login')
-
-    productos = Producto.objects.all()
-    return render(request, 'index.html', {'productos': productos})
+def login_admin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('admin_home')  # Redirige a la página principal del admin
+        else:
+            messages.error(request, 'Credenciales inválidas')
+    return render(request, 'login_admin.html')  # Asegúrate de tener este archivo en la carpeta de plantillas
 
 
 def login_user(request):
@@ -29,13 +32,13 @@ def login_user(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None and hasattr(user, 'mesa'):
             login(request, user)
             return redirect('index')
         else:
             return HttpResponse("Usuario o contraseña inválidos o el usuario no es una mesa.")
-    
+
     return render(request, 'login.html')
 
 
@@ -67,26 +70,40 @@ def agregar_producto(request, producto_id):
 
     return redirect('index')
 
-# Vista de administración principal
+
+from django.shortcuts import redirect
+
+@login_required
 def admin_home(request):
+    if not request.user.is_staff:
+        return redirect('login_admin')  # Cambiado a 'login_admin' para que coincida con la URL definida
+    
     productos = Producto.objects.all()
     mesas = Mesa.objects.all()
     pedidos = Pedido.objects.all()
     return render(request, 'admin_home.html', {'productos': productos, 'mesas': mesas, 'pedidos': pedidos})
-
 # Productos
 def crear_producto(request):
     if request.method == "POST":
+        nombre = request.POST['nombre']
+        descripcion = request.POST.get('descripcion', '')
+        precio = request.POST['precio']
+        categoria = request.POST['categoria']
+        stock = request.POST['stock']
+        imagen = request.FILES.get('imagen')  # Captura el archivo de imagen
+
+        # Crear el producto directamente
         Producto.objects.create(
-            nombre=request.POST['nombre'],
-            descripcion=request.POST.get('descripcion', ''),
-            precio=request.POST['precio'],
-            categoria=request.POST['categoria'],
-            stock=request.POST['stock']
+            nombre=nombre,
+            descripcion=descripcion,
+            precio=precio,
+            categoria=categoria,
+            stock=stock,
+            imagen=imagen  # Guarda la imagen en el campo `ImageField`
         )
         return redirect('admin_home')
-    return render(request, 'crear_producto.html')
 
+    return render(request, 'crear_producto.html')
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == "POST":
@@ -139,44 +156,10 @@ def eliminar_mesa(request, mesa_id):
 
 
 
-# Autenticación
-def login_user(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None and hasattr(user, 'mesa'):
-            login(request, user)
-            return redirect('index')
-        else:
-            return HttpResponse("Usuario o contraseña inválidos o el usuario no es una mesa.")
-    
-    return render(request, 'login.html')
-
-def logout_user(request):
-    logout(request)
-    return redirect('login')
-
-# views.py
-
-def admin_home(request):
-    mesas = Mesa.objects.all()
-    return render(request, 'admin_home.html', {'mesas': mesas})
-
-def admin_home(request):
-    productos = Producto.objects.all()  # Consulta para obtener todos los productos
-    mesas = Mesa.objects.all()  # Consulta para obtener todas las mesas
-    return render(request, 'admin_home.html', {'productos': productos, 'mesas': mesas})
-# views.py
-def index(request):
-    productos = Producto.objects.all()
-    return render(request, 'index.html', {'productos': productos})
-
 def login_mesa(request):
     if request.method == "POST":
         numero_mesa = request.POST.get("numero_mesa")
-        
+
         try:
             mesa = Mesa.objects.get(numero=numero_mesa)
             request.session['mesa_id'] = mesa.id  # Guardamos la mesa en la sesión
@@ -187,7 +170,6 @@ def login_mesa(request):
 
     return render(request, 'login_mesa.html')
 
-# views.py
 
 
 def index(request):
@@ -202,7 +184,7 @@ def pedido_resumen(request):
     pedido = Pedido.objects.last()  # El último pedido realizado
     return render(request, 'pedido_resumen.html', {'pedido': pedido})
 
-# views.py
+
 
 
 def finalizar_pedido(request):
@@ -212,7 +194,7 @@ def finalizar_pedido(request):
             return JsonResponse({"error": "El carrito está vacío"}, status=400)
 
         total = sum(item['cantidad'] * item['precio'] for item in carrito.values())
-        
+
         # Crear el pedido
         pedido = Pedido.objects.create(total=total)
 
@@ -230,16 +212,16 @@ def finalizar_pedido(request):
         request.session['cart'] = {}
 
         return render(request, 'pedido_resumen.html', {'pedido': pedido})
-    
+
     return redirect('index')
 
-# views.py
+
 
 
 def ver_pedidos(request):
     """Vista que muestra todos los pedidos para el administrador."""
     pedidos = Pedido.objects.all()
-    
+
     # Calcula el subtotal de cada detalle de pedido
     for pedido in pedidos:
         for detalle in pedido.detalles.all():
@@ -247,21 +229,19 @@ def ver_pedidos(request):
 
     return render(request, 'ver_pedidos.html', {'pedidos': pedidos})
 
-# views.py
-
-# views.py
 
 @csrf_exempt
 def guardar_pedido(request):
     if request.method == "POST":
         data = json.loads(request.body)  # Obtiene los datos del carrito en JSON
         mesa_id = request.session.get("mesa_id")  # Obtén la mesa de la sesión o ajusta según tus necesidades
-        
+        print(f"Mesa en sesión: {mesa_id}")
+
         if mesa_id is None:
             return JsonResponse({"error": "No se ha seleccionado una mesa"}, status=400)
 
         pedido = Pedido.objects.create(mesa_id=mesa_id, estado="no tomado", total=0)  # Crea el pedido inicialmente con total 0
-        
+
         total = 0
         for producto_id, item in data.items():
             producto = Producto.objects.get(id=producto_id)
@@ -280,6 +260,8 @@ def guardar_pedido(request):
             if producto.stock >= cantidad:
                 producto.stock -= cantidad
                 producto.save()
+                print(f"Mesa en sesión: {mesa_id}")
+
             else:
                 return JsonResponse({"error": f"No hay suficiente stock para {producto.nombre}"}, status=400)
 
@@ -291,58 +273,23 @@ def guardar_pedido(request):
 
         return JsonResponse({"mensaje": "Pedido realizado con éxito"})
 
-# views.py
-def ver_pedidos(request):
-    pedidos = Pedido.objects.all()
-    return render(request, 'ver_pedidos.html', {'pedidos': pedidos})
-
 def actualizar_estado_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
+
     if request.method == 'POST':
         nuevo_estado = request.POST.get('estado')
-        if nuevo_estado in dict(Pedido.ESTADO_OPCIONES).keys():
-            pedido.estado = nuevo_estado
-            pedido.save()
-    return redirect('ver_pedidos')
+        pedido.estado = nuevo_estado
+        pedido.save()
 
-
-
-@csrf_exempt
-def guardar_pedido(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        mesa_id = request.session.get('mesa_id')
-
-        if not mesa_id:
-            return JsonResponse({"error": "Mesa no encontrada"}, status=400)
-
-        mesa = Mesa.objects.get(id=mesa_id)
-        total = sum(item['quantity'] * item['price'] for item in data.values())
-
-        pedido = Pedido.objects.create(mesa=mesa, total=total, estado='no tomado')
-
-        for product_id, item in data.items():
-            producto = Producto.objects.get(id=product_id)
-            DetallePedido.objects.create(
-                pedido=pedido,
-                producto=producto,
-                cantidad=item['quantity'],
-                precio=producto.precio
-            )
-
-        return JsonResponse({"mensaje": "Pedido guardado con éxito"})
-    return JsonResponse({"error": "Método no permitido"}, status=405)
-
-
-# views.py
-
+        # Redirige a la lista general de pedidos
+        return redirect('ver_pedidos')  # Aquí no se pasa pedido_id
 def ver_detalle_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
     detalles = pedido.detalles.all()
-    
+
     # Calculate the total amount
     total = sum(detalle.cantidad * detalle.producto.precio for detalle in detalles)
-    
+
     return render(request, 'detalle_pedido.html', {
         'pedido': pedido,
         'detalles': detalles,

@@ -49,3 +49,10 @@ class DetallePedido(models.Model):
         return f"{self.cantidad} x {self.producto.nombre} en Pedido {self.pedido.id}"
     
     
+class Admin(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nombre_completo = models.CharField(max_length=200)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.nombre_completo

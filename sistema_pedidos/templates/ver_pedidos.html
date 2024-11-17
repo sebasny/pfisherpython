@@ -165,10 +165,11 @@
                         {% csrf_token %}
                         <select name="estado" onchange="this.form.submit()">
                             {% for key, value in pedido.ESTADO_OPCIONES %}
-                            <option value="{{ key }}" {% if pedido.estado == key %}selected{% endif %}>{{ value }}</option>
+                                <option value="{{ key }}" {% if pedido.estado == key %}selected{% endif %}>{{ value }}</option>
                             {% endfor %}
                         </select>
                     </form>
+                    
                 </td>
                 <td class="actions">
                     <a href="{% url 'ver_detalle_pedido' pedido.id %}" class="btn btn-ver">Ver Pedido</a>

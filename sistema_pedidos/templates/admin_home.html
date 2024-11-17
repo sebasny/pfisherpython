@@ -222,29 +222,21 @@
         <table>
             <tr>
                 <th>Número</th>
-                <th>Disponible</th>
-                <th>Usuario</th>
                 <th>Acciones</th>
             </tr>
             {% for mesa in mesas %}
             <tr>
+                
                 <td>{{ mesa.numero }}</td>
-                <td>{% if mesa.disponible %}Sí{% else %}No{% endif %}</td>
-                <td>
-                    {% if mesa.usuario %}
-                        {{ mesa.usuario.username }}
-                    {% else %}
-                        Sin Usuario
-                    {% endif %}
-                </td>
                 <td>
                     <div class="action-buttons">
                         <a href="{% url 'editar_mesa' mesa.id %}" class="btn btn-edit">Editar</a>
-                        <a href="{% url 'eliminar_mesa' mesa.id %}" class="btn btn-delete" onclick="return confirm('¿Seguro que quieres eliminar esta mesa?')">Eliminar</a>
+                        <a href="{% url 'eliminar_mesa' mesa.id %}" class="btn btn-delete" >Eliminar</a>
                     </div>
                 </td>
             </tr>
             {% endfor %}
+            
         </table>
     </div>
 </body>

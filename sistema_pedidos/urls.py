@@ -12,6 +12,12 @@ urlpatterns = [
     path('admin_home/', views.admin_home, name='admin_home'),
      path('index', views.index, name='index'), 
      path('', views.login_mesa, name='login_mesa'),
+     path('ver_pedidos/', views.ver_pedidos, name='ver_pedidos'),
+     path('admin/', admin.site.urls),
+     path('actualizar_estado_pedido/<int:pedido_id>/', views.actualizar_estado_pedido, name='actualizar_estado_pedido'),
+    # Otras URLs
+    # Otras URLs...
+    path('login_admin/', views.login_admin, name='login_admin'),
 
     # Manejo de productos
     path('crear_producto/', views.crear_producto, name='crear_producto'),
@@ -22,7 +28,6 @@ urlpatterns = [
     path('guardar_pedido/', views.guardar_pedido, name='guardar_pedido'),
     path('ver_pedidos/', views.ver_pedidos, name='ver_pedidos'),
       path('ver_pedidos/eliminar/<int:pedido_id>/', views.eliminar_pedido, name='eliminar_pedido'),
-    path('actualizar_estado_pedido/<int:pedido_id>/', views.actualizar_estado_pedido, name='actualizar_estado_pedido'),
     path('ver_pedido/<int:pedido_id>/', views.ver_detalle_pedido, name='ver_detalle_pedido'),
 
     # Manejo de mesas
