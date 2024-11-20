@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-s&2#@#7(s1q*-^cm*j7ub=g2j+^xuc#gcp#!h^$(s5xq!l)h4^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pfisher.pythonanywhere.com']
 
 
 # Application definition
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'patagonia_fisher.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/home/pfisher/pfisherpython/db.sqlite3',
     }
 }
 
