@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
+<<<<<<< HEAD
 def login_admin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -24,6 +25,9 @@ def login_admin(request):
         else:
             messages.error(request, 'Credenciales inválidas')
     return render(request, 'login_admin.html')  # Asegúrate de tener este archivo en la carpeta de plantillas
+=======
+
+>>>>>>> main
 
 
 def login_user(request):
@@ -71,9 +75,13 @@ def agregar_producto(request, producto_id):
     return redirect('index')
 
 
+<<<<<<< HEAD
 from django.shortcuts import redirect
 
 @login_required
+=======
+
+>>>>>>> main
 def admin_home(request):
     if not request.user.is_staff:
         return redirect('login_admin')  # Cambiado a 'login_admin' para que coincida con la URL definida
@@ -82,7 +90,12 @@ def admin_home(request):
     mesas = Mesa.objects.all()
     pedidos = Pedido.objects.all()
     return render(request, 'admin_home.html', {'productos': productos, 'mesas': mesas, 'pedidos': pedidos})
+<<<<<<< HEAD
 # Productos
+=======
+
+
+>>>>>>> main
 def crear_producto(request):
     if request.method == "POST":
         nombre = request.POST['nombre']
@@ -102,8 +115,15 @@ def crear_producto(request):
             imagen=imagen  # Guarda la imagen en el campo `ImageField`
         )
         return redirect('admin_home')
+<<<<<<< HEAD
 
     return render(request, 'crear_producto.html')
+=======
+
+    return render(request, 'crear_producto.html')
+
+
+>>>>>>> main
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == "POST":
@@ -154,8 +174,11 @@ def eliminar_mesa(request, mesa_id):
         return redirect('admin_home')
     return render(request, 'eliminar_mesa.html', {'mesa': mesa})
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main
 def login_mesa(request):
     if request.method == "POST":
         numero_mesa = request.POST.get("numero_mesa")
@@ -170,7 +193,10 @@ def login_mesa(request):
 
     return render(request, 'login_mesa.html')
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 
 def index(request):
     # Verificamos si la mesa está en la sesión
@@ -184,8 +210,11 @@ def pedido_resumen(request):
     pedido = Pedido.objects.last()  # El último pedido realizado
     return render(request, 'pedido_resumen.html', {'pedido': pedido})
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main
 
 def finalizar_pedido(request):
     if request.method == 'POST':
@@ -212,10 +241,15 @@ def finalizar_pedido(request):
         request.session['cart'] = {}
 
         return render(request, 'pedido_resumen.html', {'pedido': pedido})
+<<<<<<< HEAD
 
     return redirect('index')
 
 
+=======
+
+    return redirect('index')
+>>>>>>> main
 
 
 def ver_pedidos(request):
@@ -273,6 +307,10 @@ def guardar_pedido(request):
 
         return JsonResponse({"mensaje": "Pedido realizado con éxito"})
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 def actualizar_estado_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
 
@@ -280,6 +318,12 @@ def actualizar_estado_pedido(request, pedido_id):
         nuevo_estado = request.POST.get('estado')
         pedido.estado = nuevo_estado
         pedido.save()
+<<<<<<< HEAD
+=======
+
+        # Redirige a la lista general de pedidos
+        return redirect('ver_pedidos')  # Aquí no se pasa pedido_id
+>>>>>>> main
 
         # Redirige a la lista general de pedidos
         return redirect('ver_pedidos')  # Aquí no se pasa pedido_id
@@ -306,6 +350,4 @@ def eliminar_pedido(request, pedido_id):
 def obtener_pedidos_actualizados(request):
     pedidos = Pedido.objects.values('id', 'mesa__numero', 'total', 'estado', 'fecha')
     return JsonResponse(list(pedidos), safe=False)
-
-
 
