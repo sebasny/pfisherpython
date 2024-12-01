@@ -9,66 +9,97 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
         }
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 300px;
             background-color: #ffffff;
             padding: 2em;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             text-align: center;
+            overflow: hidden;
+        }
+        form{
+            padding: 1.2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column ;
         }
         h2 {
-            margin-bottom: 1em;
+            margin-bottom: 1.5em;
             color: #333;
+            font-size: 1.5em;
         }
-        input[type="number"] {
+        input[type="number"], input[type="password"] {
             width: 100%;
             padding: 0.8em;
             margin-bottom: 1em;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
             font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
         }
         button {
             padding: 0.8em 1.5em;
-            background-color: #007bff;
+            background-color: #ff007f;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s, transform 0.2s;
         }
         button:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
         }
         .error-message {
             color: red;
             margin-bottom: 1em;
+            font-size: 0.9em;
+        }
+        .success-message {
+            color: green;
+            margin-bottom: 1em;
+            font-size: 0.9em;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 0.5em;
         }
     </style>
 </head>
 <body>
-    <h2>Iniciar Sesión - Mesa</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="numero_mesa">Número de Mesa:</label>
-        <input type="number" name="numero_mesa" id="numero_mesa" required>
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" name="contraseña" id="contraseña" required>
-        <button type="submit">Iniciar Sesión</button>
-    </form>
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="numero_mesa">Número de Mesa:</label>
+            <input type="number" name="numero_mesa" id="numero_mesa" required>
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" name="contraseña" id="contraseña" required>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        {% if messages %}
+        <div class="error-message">
+            Credenciales incorrectas.
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

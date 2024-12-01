@@ -137,14 +137,15 @@ def eliminar_mesa(request, mesa_id):
     return render(request, 'eliminar_mesa.html', {'mesa': mesa})
 
 def login_mesa(request):
-    """Vista para que una mesa inicie sesión."""
+    """Vista para que una mesa inicie sesión sin usar check_password."""
     if request.method == "POST":
         numero_mesa = request.POST.get("numero_mesa")
         contraseña = request.POST.get("contraseña")
 
         try:
             mesa = Mesa.objects.get(numero=numero_mesa)
-            if check_password(contraseña, mesa.contraseña):  # Verifica la contraseña
+            # Comparación directa de la contraseña
+            if mesa.contraseña == contraseña:
                 request.session['mesa_id'] = mesa.id  # Guarda la mesa en la sesión
                 return redirect('index')  # Redirige a la vista principal
             else:
