@@ -7,8 +7,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-
-
+from django.contrib.auth.hashers import check_password
 
 
 def login_user(request):
@@ -138,19 +137,22 @@ def eliminar_mesa(request, mesa_id):
     return render(request, 'eliminar_mesa.html', {'mesa': mesa})
 
 def login_mesa(request):
+    """Vista para que una mesa inicie sesión."""
     if request.method == "POST":
         numero_mesa = request.POST.get("numero_mesa")
+        contraseña = request.POST.get("contraseña")
 
         try:
             mesa = Mesa.objects.get(numero=numero_mesa)
-            request.session['mesa_id'] = mesa.id  # Guardamos la mesa en la sesión
-            return redirect('index')  # Redirige al menú
+            if check_password(contraseña, mesa.contraseña):  # Verifica la contraseña
+                request.session['mesa_id'] = mesa.id  # Guarda la mesa en la sesión
+                return redirect('index')  # Redirige a la vista principal
+            else:
+                messages.error(request, "Contraseña incorrecta.")
         except Mesa.DoesNotExist:
             messages.error(request, "La mesa ingresada no existe.")
-            return redirect('login_mesa')  # Redirige al inicio de sesión si la mesa no existe
-
+    
     return render(request, 'login_mesa.html')
-
 
 def index(request):
     # Verificamos si la mesa está en la sesión

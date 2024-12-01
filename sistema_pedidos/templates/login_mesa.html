@@ -54,20 +54,21 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Iniciar Sesión en Mesa</h2>
-        {% if messages %}
-            <div class="error-message">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-        <form method="POST" action="{% url 'login_mesa' %}">
-            {% csrf_token %}
-            <input type="number" name="numero_mesa" placeholder="Ingrese el número de mesa" required>
-            <button type="submit">Iniciar Sesión</button>
-        </form>
-    </div>
+    <h2>Iniciar Sesión - Mesa</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="numero_mesa">Número de Mesa:</label>
+        <input type="number" name="numero_mesa" id="numero_mesa" required>
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" name="contraseña" id="contraseña" required>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 </html>

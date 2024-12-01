@@ -1,13 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import render
-#Modelo Mesa
 class Mesa(models.Model):
-    numero = models.PositiveIntegerField(unique=True)  # Número de la mesa, debe ser único
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)  # Relación con usuario
-
-    def __str__(self):
-        return f"Mesa {self.numero}"
+    id = models.AutoField(primary_key=True)
+    numero = models.PositiveIntegerField(unique=True)  # Número único para cada mesa
+    usuario = models.OneToOneField(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="mesa"
+    )  
+    contraseña = models.CharField(max_length=128, default="default_password")
 
 #Modelo Pedido
 class Pedido(models.Model):
