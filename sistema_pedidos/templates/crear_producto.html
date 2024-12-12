@@ -35,7 +35,7 @@
             color: #333;
         }
 
-        input, textarea, select, button,.btn-back {
+        input, textarea, select, button, .btn-back {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -60,7 +60,7 @@
             color: white;
         }
 
-        .btn-save,.btn-back {
+        .btn-save, .btn-back {
             background-color: #ff007f;
         }
 
@@ -79,12 +79,18 @@
             background-color: #cc0066;
         }
 
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Crear Producto</h2>
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="return validarFormulario()">
             {% csrf_token %}
             <label>Nombre:</label>
             <input type="text" name="nombre" required>
@@ -93,7 +99,8 @@
             <textarea name="descripcion"></textarea>
 
             <label>Precio:</label>
-            <input type="number" name="precio" step="0.01" required>
+            <input type="text" id="precio" name="precio" required>
+            <p id="error-precio" class="error-message" style="display: none;">Por favor, ingresa un número válido sin comas ni caracteres especiales.</p>
 
             <label>Categoría:</label>
             <select name="categoria">
@@ -114,5 +121,22 @@
             </div>
         </form>
     </div>
+
+    <script>
+        function validarFormulario() {
+            const precioInput = document.getElementById('precio');
+            const errorPrecio = document.getElementById('error-precio');
+            const precio = precioInput.value;
+
+            // Validar que el precio sea un número válido
+            if (!/^\d+(\.\d{1,2})?$/.test(precio)) {
+                errorPrecio.style.display = 'block';
+                return false; // Detener el envío del formulario
+            }
+
+            errorPrecio.style.display = 'none';
+            return true; // Permitir el envío del formulario
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas - Patagonia Fisher</title>
+    <style>
+        /* Fondo general */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #f8fbff, #e0e7ff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 900px;
+            width: 90%;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Título */
+        h1 {
+            text-align: center;
+            color: #ff007f;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        /* Sección de estadísticas */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Tarjeta de estadísticas */
+        .stat-card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .stat-card p {
+            font-size: 1.2em;
+            margin: 0;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .highlight {
+            color: #007bff;
+        }
+
+        /* Separador */
+        .divider {
+            margin: 20px 0;
+            height: 2px;
+            background: linear-gradient(to right, #ff007f, transparent);
+        }
+
+        /* Botón de regreso */
+        .btn-back {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #ff007f;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: #cc0066;
+        }
+
+        /* Ajustes responsivos */
+        @media (max-width: 768px) {
+            .stat-card h2 {
+                font-size: 1.3em;
+            }
+
+            .stat-card p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Estadísticas de la Cafetería</h1>
+        <div class="stats">
+            <div class="stat-card">
+                <h2>Producto más pedido esta semana</h2>
+                <p><span class="highlight">{{ producto_mas_vendido_semana.producto__nombre }}</span> con {{ producto_mas_vendido_semana.total_vendido }} unidades.</p>
+            </div>
+            <div class="stat-card">
+                <h2>Producto más pedido este mes</h2>
+                <p><span class="highlight">{{ producto_mas_vendido_mes.producto__nombre }}</span> con {{ producto_mas_vendido_mes.total_vendido }} unidades.</p>
+            </div>
+            <div class="stat-card">
+                <h2>Producto menos pedido esta semana</h2>
+                <p><span class="highlight">{{ producto_menos_vendido_semana.producto__nombre }}</span> con {{ producto_menos_vendido_semana.total_vendido }} unidades.</p>
+            </div>
+            <div class="stat-card">
+                <h2>Ingresos últimos 7 días</h2>
+                <p>$<span class="highlight">{{ ingresos_semana|floatformat:0 }}</span></p>
+            </div>
+            <div class="stat-card">
+                <h2>Ingresos últimos 30 días</h2>
+                <p>$<span class="highlight">{{ ingresos_mes|floatformat:0 }}</span></p>
+            </div>
+            <div class="stat-card">
+                <h2>Hora pico de pedidos esta semana</h2>
+                <p><span class="highlight">{{ hora_pico.hora }}:00</span></p>
+            </div>
+            <div class="stat-card">
+                <h2>Categoría más vendida este mes</h2>
+                <p><span class="highlight">{{ categoria_mas_vendida.producto__categoria }}</span> con {{ categoria_mas_vendida.total_vendido }} unidades.</p>
+            </div>
+            <div class="stat-card">
+                <h2>Pedidos realizados hoy</h2>
+                <p><span class="highlight">{{ total_pedidos_hoy }}</span></p>
+            </div>
+            <div class="stat-card">
+                <h2>Pedidos realizados esta semana</h2>
+                <p><span class="highlight">{{ total_pedidos_semana }}</span></p>
+            </div>
+            <div class="stat-card">
+                <h2>Pedidos realizados este mes</h2>
+                <p><span class="highlight">{{ total_pedidos_mes }}</span></p>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <a href="{% url 'admin_home' %}" class="btn-back">Volver al Panel</a>
+    </div>
+</body>
+</html>

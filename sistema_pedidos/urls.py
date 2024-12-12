@@ -62,15 +62,17 @@ urlpatterns = [
     path('pedido_resumen/', views.pedido_resumen, name='pedido_resumen'),
     path('guardar_pedido/', views.guardar_pedido, name='guardar_pedido'),
     path('ver_pedidos/', views.ver_pedidos, name='ver_pedidos'),
-      path('ver_pedidos/eliminar/<int:pedido_id>/', views.eliminar_pedido, name='eliminar_pedido'),
+    path('ver_pedidos/eliminar/<int:pedido_id>/', views.eliminar_pedido, name='eliminar_pedido'),
     path('actualizar_estado_pedido/<int:pedido_id>/', views.actualizar_estado_pedido, name='actualizar_estado_pedido'),
     path('ver_pedido/<int:pedido_id>/', views.ver_detalle_pedido, name='ver_detalle_pedido'),
-
+    path('historial_pedidos/', views.historial_pedidos, name='historial_pedidos'),
+    path('ver_pedido_eliminado/<int:pedido_id>/', views.ver_detalle_pedido_eliminado, name='ver_detalle_pedido_eliminado'),
+    path('estadisticas/', views.estadisticas, name='estadisticas'),
     # Manejo de mesas
     path('crear_mesa/', views.crear_mesa, name='crear_mesa'),
     path('editar_mesa/<int:mesa_id>/', views.editar_mesa, name='editar_mesa'),
     path('eliminar_mesa/<int:mesa_id>/', views.eliminar_mesa, name='eliminar_mesa'),
-
+    
     # M
     path('ver_pedidos/', views.ver_pedidos, name='ver_pedidos'),  # URL para "Ve
     path('obtener_pedidos_actualizados/', views.obtener_pedidos_actualizados, name='obtener_pedidos_actualizados'),

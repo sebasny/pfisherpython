@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <title>Panel de Administración - Patagonia Fisher</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -70,6 +69,21 @@
             border-bottom: 2px solid #ff007f;
             padding-bottom: 10px;
             font-weight: bold;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .search-container input {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
         }
 
         table {
@@ -168,6 +182,21 @@
             }
         }
     </style>
+    <script>
+        function buscarProducto() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#productosTable tbody tr");
+
+            rows.forEach(row => {
+                const nombre = row.querySelector("td:first-child").innerText.toLowerCase();
+                if (nombre.includes(input)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -178,43 +207,52 @@
             <a href="{% url 'admin_home' %}">Inicio</a>
             <a href="{% url 'crear_producto' %}">Crear Producto</a>
             <a href="{% url 'crear_mesa' %}">Crear Mesa</a>
-            <a href="{% url 'ver_pedidos' %}">Ver Pedidos</a> <!-- Nuevo botón de Ver Pedidos -->
+            <a href="{% url 'ver_pedidos' %}">Ver Pedidos</a>
+            <a href="{% url 'historial_pedidos' %}">Historial de Pedidos</a> 
+            <a href="{% url 'estadisticas' %}">Estadísticas</a><!-- Nuevo botón de Ver Pedidos -->
         </div>
 
         <!-- Sección de Productos -->
         <h3>Productos</h3>
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Categoría</th>
-                <th>Stock</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-            </tr>
-            {% for producto in productos %}
-            <tr>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.descripcion }}</td>
-                <td>${{ producto.precio }}</td>
-                <td>{{ producto.categoria }}</td>
-                <td>{{ producto.stock }}</td>
-                <td>
-                    {% if producto.imagen %}
-                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-img">
-                    {% else %}
-                        No disponible
-                    {% endif %}
-                </td>
-                <td>
-                    <div class="action-buttons">
-                        <a href="{% url 'editar_producto' producto.id %}" class="btn btn-edit">Editar</a>
-                        <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-delete" onclick="return confirm('¿Seguro que quieres eliminar este producto?')">Eliminar</a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="buscarProducto()" placeholder="Buscar productos por nombre...">
+        </div>
+        <table id="productosTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.descripcion }}</td>
+                    <td>${{ producto.precio }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>{{ producto.stock }}</td>
+                    <td>
+                        {% if producto.imagen %}
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-img">
+                        {% else %}
+                            No disponible
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'editar_producto' producto.id %}" class="btn btn-edit">Editar</a>
+                            <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-delete" onclick="return confirm('¿Seguro que quieres eliminar este producto?')">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <!-- Sección de Mesas -->
@@ -226,17 +264,15 @@
             </tr>
             {% for mesa in mesas %}
             <tr>
-                
                 <td>{{ mesa.numero }}</td>
                 <td>
                     <div class="action-buttons">
                         <a href="{% url 'editar_mesa' mesa.id %}" class="btn btn-edit">Editar</a>
-                        <a href="{% url 'eliminar_mesa' mesa.id %}" class="btn btn-delete" >Eliminar</a>
+                        <a href="{% url 'eliminar_mesa' mesa.id %}" class="btn btn-delete">Eliminar</a>
                     </div>
                 </td>
             </tr>
             {% endfor %}
-            
         </table>
     </div>
 </body>

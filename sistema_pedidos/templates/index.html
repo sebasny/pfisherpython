@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Patagonia Fisher - Menú</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <style>
         /* Fondo general */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(to right, #f8fbff, #e0e7ff);
             color: #333;
             margin: 0;
@@ -29,11 +30,14 @@
 
         /* Título */
         h2 {
+            font-family: 'Caveat', cursive;
             color: #333;
             text-align: center;
             margin-bottom: 25px;
-            font-size: 2.5em;
+            font-size: 3em;
             font-weight: bold;
+            border-bottom: 4px solid #ff007f;
+            padding-bottom: 10px;
         }
 
         /* Filtro de categoría */
@@ -48,19 +52,22 @@
             padding: 10px 15px;
             background-color: #ff007f;
             color: #fff;
-            border: none;
+            border: 2px solid #ff007f;
             border-radius: 5px;
             cursor: pointer;
+            font-family: 'Poppins', sans-serif;
             font-weight: bold;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .category-button:hover {
             background-color: #e60073;
+            border-color: #cc0066;
         }
 
         .active-category {
             background-color: #e60073;
+            border-color: #cc0066;
         }
 
         /* Lista de productos */
@@ -71,47 +78,51 @@
             justify-content: center;
         }
 
-        /* Tarjeta de producto horizontal */
+        /* Tarjeta de producto */
         .product-card {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             background-color: #ffffff;
             padding: 15px;
             border-radius: 10px;
-            width: 45%;
+            width: 250px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #ff007f;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
         }
 
         .product-card:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            border-color: #e60073;
         }
 
         /* Imagen del producto */
         .product-card img {
-            width: 100px;
-            height: 100px;
+            width: 200px;
+            height: 200px;
             object-fit: cover;
             border-radius: 8px;
-            margin-right: 15px;
+            margin-bottom: 15px;
         }
 
         /* Detalles del producto */
         .product-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex: 1;
+            text-align: center;
+            width: 100%;
         }
 
         .product-details h3 {
-            font-size: 1.2em;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5em;
             margin: 0;
             color: #333;
             font-weight: bold;
         }
 
         .product-details p {
+            font-family: 'Poppins', sans-serif;
             color: #666;
             font-size: 0.9em;
             line-height: 1.6;
@@ -128,6 +139,7 @@
             font-size: 0.9em;
             font-weight: bold;
             color: #28a745;
+            margin-top: 5px;
         }
 
         .out-of-stock {
@@ -136,6 +148,7 @@
 
         .quantity-controls {
             display: flex;
+            justify-content: center;
             gap: 10px;
             margin-top: 10px;
         }
@@ -164,14 +177,18 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 500px;
+            border: 2px solid #ff007f;
         }
 
         .cart-container h3 {
-            font-size: 1.8em;
+            font-family: 'Caveat', cursive;
+            font-size: 2em;
             margin-bottom: 15px;
             color: #333;
             font-weight: bold;
             text-align: center;
+            border-bottom: 2px solid #ff007f;
+            padding-bottom: 10px;
         }
 
         .cart-item {
@@ -194,81 +211,30 @@
         @media (max-width: 768px) {
             .product-card {
                 width: 90%;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .product-card img {
-                margin: 0 0 10px;
             }
             .quantity-controls {
                 justify-content: center;
             }
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Menú de Patagonia Fisher</h2>
-
-        <!-- Filtro de categorías -->
-        <div class="category-filter">
-            <button class="category-button active-category" onclick="filterCategory('todos')">Todos</button>
-            <button class="category-button" onclick="filterCategory('bebidas')">Bebidas</button>
-            <button class="category-button" onclick="filterCategory('postres')">Postres</button>
-            <button class="category-button" onclick="filterCategory('platos')">Platos</button>
-        </div>
-
-        <!-- Lista de productos -->
-        <div class="product-list" id="product-list">
-            {% for producto in productos %}
-            <div class="product-card" data-category="{{ producto.categoria }}">
-                {% if producto.imagen %}
-                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
-                {% else %}
-                    <p>Imagen no disponible</p>
-                {% endif %}
-                <div class="product-details">
-                    <h3>{{ producto.nombre }}</h3>
-                    <p>{{ producto.descripcion }}</p>
-                    <strong>${{ producto.precio|floatformat:0 }}</strong>
-
-                    <p class="stock-info {% if producto.stock == 0 %}out-of-stock{% endif %}">
-                        {% if producto.stock > 0 %}
-                            Stock: <span id="stock-{{ producto.id }}">{{ producto.stock }}</span>
-                        {% else %}
-                            Producto agotado
-                        {% endif %}
-                    </p>
-
-                    <div class="quantity-controls">
-                        <button class="btn" onclick="updateCart('{{ producto.id }}', -1)" id="btn-minus-{{ producto.id }}" {% if producto.stock == 0 %}disabled{% endif %}>-</button>
-                        <span id="quantity-{{ producto.id }}">0</span>
-                        <button class="btn" onclick="updateCart('{{ producto.id }}', 1)" id="btn-plus-{{ producto.id }}" {% if producto.stock == 0 %}disabled{% endif %}>+</button>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Carrito -->
-        <div class="cart-container">
-            <h3>Carrito</h3>
-            <div id="cart-items"></div>
-            <p class="total">Total: $<span id="total">0</span></p>
-            <button class="btn" onclick="finalizarPedido()">Finalizar Pedido</button>
-        </div>
-    </div>
-
     <script>
         let cart = {};
 
         function filterCategory(category) {
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.style.display = category === 'todos' || card.dataset.category === category ? 'flex' : 'none';
-            });
-            document.querySelectorAll('.category-button').forEach(button => button.classList.remove('active-category'));
+            const cards = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.category-button');
+
+            buttons.forEach(button => button.classList.remove('active-category'));
             event.target.classList.add('active-category');
+
+            cards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (category === 'todos' || cardCategory === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         function updateCart(productId, change) {
@@ -308,12 +274,12 @@
 
                     const cartItem = document.createElement('div');
                     cartItem.classList.add('cart-item');
-                    cartItem.innerHTML = `<span>${product.name}</span> <span>${product.quantity} x $${Math.floor(product.price)} = $${Math.floor(productTotal)}</span>`;
+                    cartItem.innerHTML = `<span>${product.name}</span> <span>${product.quantity} x $${product.price} = $${productTotal}</span>`;
                     cartItemsContainer.appendChild(cartItem);
                 }
             });
 
-            document.getElementById('total').innerText = Math.floor(total);
+            document.getElementById('total').innerText = total;
         }
 
         function finalizarPedido() {
@@ -324,7 +290,6 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(cart)
-                
             })
             .then(response => response.json())
             .then(data => {
@@ -332,11 +297,62 @@
                     alert(data.error);
                 } else {
                     alert(data.mensaje);
-                    window.location.href = "{% url 'index' %}";
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error:', error));
         }
     </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Menú de Patagonia Fisher</h2>
+
+        <!-- Filtro de categorías -->
+        <div class="category-filter">
+            <button class="category-button active-category" onclick="filterCategory('todos')">Todos</button>
+            <button class="category-button" onclick="filterCategory('bebidas')">Bebidas</button>
+            <button class="category-button" onclick="filterCategory('postres')">Postres</button>
+            <button class="category-button" onclick="filterCategory('platos')">Platos</button>
+        </div>
+
+        <!-- Lista de productos -->
+        <div class="product-list" id="product-list">
+            {% for producto in productos %}
+            <div class="product-card" data-category="{{ producto.categoria }}">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+                {% else %}
+                    <p>Imagen no disponible</p>
+                {% endif %}
+                <div class="product-details">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p>{{ producto.descripcion }}</p>
+                    <strong>${{ producto.precio }}</strong>
+                    <p class="stock-info {% if producto.stock == 0 %}out-of-stock{% endif %}">
+                        {% if producto.stock > 0 %}
+                            Stock: <span id="stock-{{ producto.id }}">{{ producto.stock }}</span>
+                        {% else %}
+                            Producto agotado
+                        {% endif %}
+                    </p>
+                    <div class="quantity-controls">
+                        <button class="btn" onclick="updateCart('{{ producto.id }}', -1)" id="btn-minus-{{ producto.id }}" {% if producto.stock == 0 %}disabled{% endif %}>-</button>
+                        <span id="quantity-{{ producto.id }}">0</span>
+                        <button class="btn" onclick="updateCart('{{ producto.id }}', 1)" id="btn-plus-{{ producto.id }}" {% if producto.stock == 0 %}disabled{% endif %}>+</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Carrito -->
+        <div class="cart-container">
+            <h3>Carrito</h3>
+            <div id="cart-items"></div>
+            <p class="total">Total: $<span id="total">0</span></p>
+            <button class="btn" onclick="finalizarPedido()">Finalizar Pedido</button>
+        </div>
+    </div>
 </body>
 </html>
